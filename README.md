@@ -1,133 +1,177 @@
-Zepto E-commerce SQL Data Analyst Portfolio Project
-This is a complete, real-world data analyst portfolio project based on an e-commerce inventory dataset scraped from Zepto — one of India’s fastest-growing quick-commerce startups. This project simulates real analyst workflows, from raw data exploration to business-focused data analysis.
 
-This project is perfect for:
 
-📊 Data Analyst aspirants who want to build a strong Portfolio Project for interviews and LinkedIn
-📚 Anyone learning SQL hands-on
-💼 Preparing for interviews in retail, e-commerce, or product analytics
+# **Zepto E-commerce SQL Data Analyst Portfolio Project**
 
-📌 Project Overview
-The goal is to simulate how actual data analysts in the e-commerce or retail industries work behind the scenes to use SQL to:
+![SQL Badge](https://img.shields.io/badge/SQL-PostgreSQL-blue) ![CSV Badge](https://img.shields.io/badge/Data-CSV-green) ![Portfolio Badge](https://img.shields.io/badge/Portfolio-Project-orange)
 
-✅ Set up a messy, real-world e-commerce inventory database
+---
 
-✅ Perform Exploratory Data Analysis (EDA) to explore product categories, availability, and pricing inconsistencies
+## **Problem Statement**
 
-✅ Implement Data Cleaning to handle null values, remove invalid entries, and convert pricing from paise to rupees
+In the fast-growing e-commerce sector, companies like Zepto face challenges managing large inventories with multiple SKUs for the same product. Raw product data is often messy, inconsistent, and difficult to analyze.
 
-✅ Write business-driven SQL queries to derive insights around pricing, inventory, stock availability, revenue and more
+**Goal:** Simulate real-world data analyst workflows to clean, explore, and extract business insights from Zepto’s e-commerce product inventory dataset using SQL.
 
-📁 Dataset Overview
-The dataset was sourced from Kaggle and was originally scraped from Zepto’s official product listings. It mimics what you’d typically encounter in a real-world e-commerce inventory system.
+**Business Questions Solved:**
 
-Each row represents a unique SKU (Stock Keeping Unit) for a product. Duplicate product names exist because the same product may appear multiple times in different package sizes, weights, discounts, or categories to improve visibility – exactly how real catalog data looks.
+* Which products are best-value for customers?
+* What are the inventory trends across categories?
+* How to identify high-MRP or out-of-stock products impacting revenue?
+* How to categorize products for inventory management?
 
-🧾 Columns:
+---
 
-sku_id: Unique identifier for each product entry (Synthetic Primary Key)
+## **Solution Overview**
 
-name: Product name as it appears on the app
+This project demonstrates an **end-to-end SQL workflow** applied to a real-world e-commerce dataset:
 
-category: Product category like Fruits, Snacks, Beverages, etc.
+* **Data Setup:** Creation of SQL tables with proper data types.
+* **Data Cleaning:** Handling nulls, invalid entries, and unit conversions.
+* **Exploratory Data Analysis (EDA):** Explore categories, stock availability, and pricing inconsistencies.
+* **Business Insights:** SQL queries to derive actionable insights for revenue and inventory optimization.
 
-mrp: Maximum Retail Price (originally in paise, converted to ₹)
+This workflow mirrors what a **real data analyst** would perform in an e-commerce company.
 
-discountPercent: Discount applied on MRP
+---
 
-discountedSellingPrice: Final price after discount (also converted to ₹)
+## **Dataset Overview**
 
-availableQuantity: Units available in inventory
+Each row represents a unique SKU (Stock Keeping Unit).
 
-weightInGms: Product weight in grams
+| Column                 | Description                                                      |
+| ---------------------- | ---------------------------------------------------------------- |
+| sku_id                 | Unique identifier for each product entry (Primary Key)           |
+| name                   | Product name as it appears on the app                            |
+| category               | Product category (Fruits, Snacks, Beverages, etc.)               |
+| mrp                    | Maximum Retail Price (originally in paise, converted to ₹)       |
+| discountPercent        | Discount applied on MRP                                          |
+| discountedSellingPrice | Final price after discount (converted to ₹)                      |
+| availableQuantity      | Units available in inventory                                     |
+| weightInGms            | Product weight in grams                                          |
+| outOfStock             | Boolean flag indicating stock availability                       |
+| quantity               | Number of units per package (mixed with grams for loose produce) |
 
-outOfStock: Boolean flag indicating stock availability
+---
 
-quantity: Number of units per package (mixed with grams for loose produce)
+## **Database Schema**
 
-🔧 Project Workflow
-Here’s a step-by-step breakdown of what we do in this project:
+```text
++------------------------+
+|        zepto           |
++------------------------+
+| sku_id (PK)            |
+| category VARCHAR(120)   |
+| name VARCHAR(150)       |
+| mrp NUMERIC(8,2)       |
+| discountPercent NUMERIC(5,2) |
+| availableQuantity INT   |
+| discountedSellingPrice NUMERIC(8,2) |
+| weightInGms INT         |
+| outOfStock BOOLEAN      |
+| quantity INT            |
++------------------------+
+```
 
-1. Database & Table Creation
-We start by creating a SQL table with appropriate data types:
+> You can replace this ASCII diagram with a **visual diagram** (PNG or SVG) using tools like [dbdiagram.io](https://dbdiagram.io) or draw.io.
 
+---
+
+## **Project Workflow**
+
+**Visual Workflow Diagram (Example Placeholder)**
+
+```text
+Raw CSV Data
+     │
+     ▼
+Data Exploration (EDA)
+     │
+     ▼
+Data Cleaning & Transformation
+     │
+     ▼
+Business Insights & SQL Analysis
+     │
+     ▼
+Reports / Portfolio Results
+```
+
+> You can replace this with a professional **workflow image** for GitHub README.
+
+---
+
+### **1. Database & Table Creation**
+
+```sql
 CREATE TABLE zepto (
-  sku_id SERIAL PRIMARY KEY,
-  category VARCHAR(120),
-  name VARCHAR(150) NOT NULL,
-  mrp NUMERIC(8,2),
-  discountPercent NUMERIC(5,2),
-  availableQuantity INTEGER,
-  discountedSellingPrice NUMERIC(8,2),
-  weightInGms INTEGER,
-  outOfStock BOOLEAN,
-  quantity INTEGER
+    sku_id SERIAL PRIMARY KEY,
+    category VARCHAR(120),
+    name VARCHAR(150) NOT NULL,
+    mrp NUMERIC(8,2),
+    discountPercent NUMERIC(5,2),
+    availableQuantity INTEGER,
+    discountedSellingPrice NUMERIC(8,2),
+    weightInGms INTEGER,
+    outOfStock BOOLEAN,
+    quantity INTEGER
 );
-2. Data Import
-Loaded CSV using pgAdmin's import feature.
+```
 
-If you're not able to use the import feature, write this code instead:
+---
 
-   \copy zepto(category,name,mrp,discountPercent,availableQuantity,
-            discountedSellingPrice,weightInGms,outOfStock,quantity)
-  FROM 'data/zepto_v2.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',', QUOTE '"', ENCODING 'UTF8');
-Faced encoding issues (UTF-8 error), which were fixed by saving the CSV file using CSV UTF-8 format.
-3. 🔍 Data Exploration
-Counted the total number of records in the dataset
+### **2. Data Import**
 
-Viewed a sample of the dataset to understand structure and content
+```sql
+\copy zepto(category, name, mrp, discountPercent, availableQuantity,
+            discountedSellingPrice, weightInGms, outOfStock, quantity)
+FROM 'data/zepto_v2.csv' 
+WITH (FORMAT csv, HEADER true, DELIMITER ',', QUOTE '"', ENCODING 'UTF8');
+```
 
-Checked for null values across all columns
+> ⚠️ Fix encoding issues by saving the CSV in **UTF-8 format**.
 
-Identified distinct product categories available in the dataset
+---
 
-Compared in-stock vs out-of-stock product counts
+### **3. 🔍 Data Exploration**
 
-Detected products present multiple times, representing different SKUs
+* Count total records
+* Sample dataset view
+* Check null values
+* Identify distinct categories
+* Compare in-stock vs out-of-stock
+* Detect duplicate SKUs
 
-4. 🧹 Data Cleaning
-Identified and removed rows where MRP or discounted selling price was zero
+---
 
-Converted mrp and discountedSellingPrice from paise to rupees for consistency and readability
+### **4. 🧹 Data Cleaning**
 
-5. 📊 Business Insights
-Found top 10 best-value products based on discount percentage
+* Remove rows with `mrp` or `discountedSellingPrice` = 0
+* Convert prices from **paise to rupees**
 
-Identified high-MRP products that are currently out of stock
+---
 
-Estimated potential revenue for each product category
+### **5. 📊 Business Insights**
 
-Filtered expensive products (MRP > ₹500) with minimal discount
+* Top 10 best-value products
+* High-MRP products out-of-stock
+* Potential revenue per category
+* Filter expensive products (MRP > ₹500) with minimal discount
+* Rank top 5 categories by average discount
+* Calculate price per gram
+* Group products by weight: Low, Medium, Bulk
+* Total inventory weight per category
 
-Ranked top 5 categories offering highest average discounts
+---
 
-Calculated price per gram to identify value-for-money products
+## **How to Use This Project**
 
-Grouped products based on weight into Low, Medium, and Bulk categories
+1. Clone the repository.
+2. Open `zepto_SQL_data_analysis.sql` (contains table creation, EDA, cleaning, and business queries).
+3. Load dataset into **pgAdmin** or PostgreSQL client.
+4. Create a database and run the SQL file.
 
-Measured total inventory weight per product category
+---
 
 
-🛠️ How to Use This Project
-Clone the repository
 
 
-Open zepto_SQL_data_analysis.sql
-
-This file contains:
-
-Table creation
-
-Data exploration
-
-Data cleaning
-
-SQL Business analysis
-
-Load the dataset into pgAdmin or any other PostgreSQL client
-
-Create a database and run the SQL file
-
-Import the dataset (convert to UTF-8 if necessary)
-
-Follow along with the YouTube video for full walkthrough. 
