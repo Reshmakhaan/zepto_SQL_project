@@ -20,7 +20,7 @@ In the fast-growing e-commerce sector, companies like Zepto face challenges mana
 * How to categorize products for inventory management?
 
 ---
-Project Overview
+##Project Overview
 The goal is to simulate how actual data analysts in the e-commerce or retail industries work behind the scenes to use SQL to:
 
 ✅ Set up a messy, real-world e-commerce inventory database
@@ -35,6 +35,8 @@ The goal is to simulate how actual data analysts in the e-commerce or retail ind
 The dataset was sourced from Kaggle and was originally scraped from Zepto’s official product listings. It mimics what you’d typically encounter in a real-world e-commerce inventory system.
 
 Each row represents a unique SKU (Stock Keeping Unit) for a product. Duplicate product names exist because the same product may appear multiple times in different package sizes, weights, discounts, or categories to improve visibility – exactly how real catalog data looks.
+
+
 ## **Solution Overview**
 
 This project demonstrates an **end-to-end SQL workflow** applied to a real-world e-commerce dataset:
@@ -113,6 +115,24 @@ Reports / Portfolio Results
 > You can replace this with a professional **workflow image** for GitHub README.
 
 ---
+
+📊 Business Insights
+
+Found top 10 best-value products based on discount percentage
+
+Identified high-MRP products that are currently out of stock
+
+Estimated potential revenue for each product category
+
+Filtered expensive products (MRP > ₹500) with minimal discount
+
+Ranked top 5 categories offering highest average discounts
+
+Calculated price per gram to identify value-for-money products
+
+Grouped products based on weight into Low, Medium, and Bulk categories
+
+Measured total inventory weight per product category
 
 ### **1. Database & Table Creation**
 
